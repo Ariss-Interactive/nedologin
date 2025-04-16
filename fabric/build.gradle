@@ -1,6 +1,7 @@
 //file:noinspection GroovyAssignabilityCheck
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 architectury {
@@ -78,5 +79,18 @@ publishing {
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         // Add repositories to publish to here.
+    }
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN") // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
+    projectId = "nedologin" // This can be the project ID or the slug. Either will work!
+    versionNumber = mod_version // You don't need to set this manually. Will fail if Modrinth has this version already
+    versionType = "release" // This is the default -- can also be `beta` or `alpha`
+    uploadFile = shadowJar // With Loom, this MUST be set to `remapJar` instead of `jar`!
+    gameVersions = [minecraft_version] // Must be an array, even with only one version
+    loaders = ["fabric"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
+    dependencies { // A special DSL for creating dependencies
+        required.project "fabric-api"
     }
 }
