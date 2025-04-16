@@ -44,19 +44,19 @@ public class NLRegistries<S> {
 
     static {
         // Default plugins
-        PLUGINS.register(new ResourceLocation("nedologin", "auto_save"), AutoSave::new);
-        PLUGINS.register(new ResourceLocation("nedologin", "protect_coord"), ProtectCoord::new);
-        PLUGINS.register(new ResourceLocation("nedologin", "resend_request"), ResendRequest::new);
-        PLUGINS.register(new ResourceLocation("nedologin", "restrict_game_type"), RestrictGameType::new);
-        PLUGINS.register(new ResourceLocation("nedologin", "restrict_movement"), RestrictMovement::new);
-        PLUGINS.register(new ResourceLocation("nedologin", "timeout"), Timeout::new);
+        PLUGINS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "auto_save"), AutoSave::new);
+        PLUGINS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "protect_coord"), ProtectCoord::new);
+        PLUGINS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "resend_request"), ResendRequest::new);
+        PLUGINS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "restrict_game_type"), RestrictGameType::new);
+        PLUGINS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "restrict_movement"), RestrictMovement::new);
+        PLUGINS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "timeout"), Timeout::new);
 
         // Default storage providers
-        STORAGE_PROVIDERS.register(new ResourceLocation("nedologin", "file"),
+        STORAGE_PROVIDERS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "file"),
                 () -> mustCall(() -> new StorageProviderFile(NLConstants.NL_ENTRY)));
-        STORAGE_PROVIDERS.register(new ResourceLocation("nedologin", "sqlite"),
+        STORAGE_PROVIDERS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "sqlite"),
                 () -> mustCall((Callable<StorageProvider>) StorageProviderSQLite::new));
-        STORAGE_PROVIDERS.register(new ResourceLocation("nedologin", "mariadb"),
+        STORAGE_PROVIDERS.register(ResourceLocation.fromNamespaceAndPath("nedologin", "mariadb"),
                 () -> mustCall((Callable<StorageProvider>) StorageProviderMariaDB::new));
     }
 

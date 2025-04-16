@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.SimpleChannel;
 import net.minecraftforge.network.simple.SimpleChannel;
 import ru.marduk.nedologin.NLConstants;
 
@@ -16,7 +17,7 @@ import java.util.function.Supplier;
 public class NetworkLoader {
     private static final String PROTOCOL_VERSION = "1.1";
 
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
+    public static final SimpleChannel INSTANCE = NetworkRegistry. (
             new ResourceLocation(NLConstants.MODID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,

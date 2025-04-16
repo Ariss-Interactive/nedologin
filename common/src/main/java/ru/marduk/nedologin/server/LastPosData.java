@@ -1,7 +1,9 @@
 package ru.marduk.nedologin.server;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.saveddata.SavedData;
 import ru.marduk.nedologin.NLConstants;
@@ -11,11 +13,11 @@ import java.util.HashMap;
 
 public class LastPosData extends SavedData {
     public static final Position defaultPosition = new Position(0, 255, 0);
-    public final HashMap<String, Position> players = new HashMap<>();
+    public HashMap<String, Position> players = new HashMap<>();
 
     @SuppressWarnings("NullableProblems")
     @Override
-    public CompoundTag save(CompoundTag compoundTag) {
+    public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider pRegistries) {
         CompoundTag playersNbt = new CompoundTag();
         players.forEach((username, lastPos) -> playersNbt.put(username, lastPos.toNBT()));
 
@@ -24,7 +26,7 @@ public class LastPosData extends SavedData {
         return compoundTag;
     }
 
-    public static LastPosData loadFromNbt(CompoundTag tag) {
+    public static LastPosData loadFromNbt(CompoundTag tag, HolderLookup.Provider pRegistries) {
         LastPosData state = new LastPosData();
 
         CompoundTag playersNbt = tag.getCompound("lastPositions");
@@ -42,7 +44,7 @@ public class LastPosData extends SavedData {
     }
 
     public static LastPosData getData(MinecraftServer server) {
-        LastPosData data = server.overworld().getDataStorage().computeIfAbsent(LastPosData::loadFromNbt, LastPosData::create, NLConstants.MODID + "_positions");
+        LastPosData data = server.overworld().getDataStorage().computeIfAbsent(new Factory<>(LastPosData::create, LastPosData::loadFromNbt, DataFixTypes.SAVED_DATA_MAP_DATA), NLConstants.MODID + "_positions");
 
         data.setDirty();
 

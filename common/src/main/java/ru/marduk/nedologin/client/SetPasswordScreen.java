@@ -57,11 +57,6 @@ public final class SetPasswordScreen extends Screen {
     }
 
     @Override
-    public void tick() {
-        this.password.tick();
-    }
-
-    @Override
     public void resize(Minecraft minecraft, int width, int height) {
         String pwd = password.getValue();
         this.init(minecraft, width, height);
@@ -71,7 +66,7 @@ public final class SetPasswordScreen extends Screen {
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         this.setFocused(this.password);
         this.password.setFocused(true);
-        renderBackground(gui);
+        renderBackground(gui, mouseX, mouseY, partialTicks);
 
         int middle = width / 2;
         gui.drawCenteredString(font, Component.translatable("nedologin.password.title"),

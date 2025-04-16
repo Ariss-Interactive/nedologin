@@ -10,7 +10,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "client": [
-    "TitleScreenAccessor"
-  ]
+  "client": []
 }

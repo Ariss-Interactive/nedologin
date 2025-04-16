@@ -17,6 +17,6 @@ classes/
 .vscode
 .settings
 *.launch
-forge/run
-fabric/run
-common/run
+neoforge/runs
+fabric/runs
+common/runs

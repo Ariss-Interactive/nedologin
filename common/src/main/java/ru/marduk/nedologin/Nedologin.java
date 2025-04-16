@@ -24,7 +24,7 @@ public final class Nedologin {
         }
 
         NLStorage.initialize(NLConfig.INSTANCE.storageProvider, server);
-        PlayerLoginHandler.initLoginHandler(Arrays.stream(NLConfig.INSTANCE.plugins).map(ResourceLocation::new));
+        PlayerLoginHandler.initLoginHandler(Arrays.stream(NLConfig.INSTANCE.plugins).map(ResourceLocation::parse));
     }
 
     public static void ServerStop() {

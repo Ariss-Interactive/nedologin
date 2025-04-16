@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.PlayerList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -41,7 +42,8 @@ public class MixinPlayerManager {
     }
 
     @Inject(method = "placeNewPlayer", at = @At("RETURN"))
-    private void onPlayerConnect(Connection connection, ServerPlayer serverPlayer, CallbackInfo ci) {
-        ServerEvents.playerJoin(serverPlayer);
+    private void onPlayerConnect(Connection pConnection, ServerPlayer pPlayer, CommonListenerCookie pCookie, CallbackInfo ci) {
+        Nedologin.logger.info("PLAYER JOINED PLAYER JOINED!!!!");
+        ServerEvents.playerJoin(pPlayer);
     }
 }

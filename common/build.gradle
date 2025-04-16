@@ -1,28 +1,52 @@
-architectury {
-    common(rootProject.enabled_platforms.split(","))
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/nedologin.accesswidener")
+neoForge {
+    neoFormVersion = neoform_version
+    // Automatically enable AccessTransformers if the file exists
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.add(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = minecraft_version
+        mappingsVersion = parchment_version
+    }
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
 
-    implementation 'at.favre.lib:bcrypt:0.10.2'
-    implementation 'at.favre.lib:bytes:1.6.1'
-}
+    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
-publishing {
-    publications {
-        mavenCommon(MavenPublication) {
-            artifactId = rootProject.archives_base_name
-            from components.java
+    jarJar(implementation('at.favre.lib:bcrypt')) {
+        version {
+            prefer '0.10.2'
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
+    jarJar(implementation('at.favre.lib:bytes')) {
+        version {
+            prefer '1.6.1'
+        }
     }
+}
+
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }

@@ -25,7 +25,7 @@ public class NLStorage {
     }
 
     private NLStorage(String provider) {
-        storageProvider = NLRegistries.STORAGE_PROVIDERS.get(new ResourceLocation(provider))
+        storageProvider = NLRegistries.STORAGE_PROVIDERS.get(ResourceLocation.parse(provider))
                 .orElseThrow(() -> new RuntimeException("Storage provider not found: " + provider))
                 .get();
     }

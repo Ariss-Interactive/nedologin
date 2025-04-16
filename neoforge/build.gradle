@@ -1,0 +1,66 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = neoforge_version
+
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.add(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = minecraft_version
+        mappingsVersion = parchment_version
+    }
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', 'nedologin')
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+        }
+        client {
+            client()
+        }
+        data {
+            data()
+        }
+        server {
+            server()
+        }
+    }
+    mods {
+        "nedologin" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    jarJar(implementation('at.favre.lib:bcrypt')) {
+        version {
+            prefer '0.10.2'
+        }
+    }
+
+    jarJar(implementation('at.favre.lib:bytes')) {
+        version {
+            prefer '1.6.1'
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+processResources {
+    var expandProps = [
+            "version": mod_version,
+            "mc_version": rootProject.minecraft_version
+    ]
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand expandProps
+    }
+
+    inputs.properties(expandProps)
+}

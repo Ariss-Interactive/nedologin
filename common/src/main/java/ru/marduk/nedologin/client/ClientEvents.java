@@ -9,15 +9,8 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.mutable.MutableObject;
-import ru.marduk.nedologin.Nedologin;
-import ru.marduk.nedologin.mixin.TitleScreenAccessor;
-import ru.marduk.nedologin.platform.Service;
 
 public class ClientEvents {
-    public static void onJoinServer() {
-        Nedologin.logger.debug("Sending login packet to the server...");
-        Service.CLIENT_NETWORK.SendMessageLogin(PasswordHolder.instance().password());
-    }
 
     // Regarding the warning: refer to ChangePasswordCommand
     public static void onClientRegisterCommand(CommandDispatcher dispatcher) {
@@ -33,7 +26,7 @@ public class ClientEvents {
 
             MutableObject<Button> addable = new MutableObject<>(null);
 
-            ((TitleScreenAccessor)gui).getChildren().stream()
+            gui.children().stream()
                     .filter(w -> w instanceof AbstractWidget)
                     .map(w -> (AbstractWidget)w)
                     .filter(w -> w.getMessage()

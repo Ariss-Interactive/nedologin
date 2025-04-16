@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="Beerware"
+[[mods]]
+modId="nedologin"
+version="${version}"
+displayName="Nedologin"
+authors="marduk.ru"
+credits="SimpleLogin authors (Seraph_JACK, Yesterday17)"
+description="Funky auth mod."
+logoFile="icon.png"
+logoBlur=false
