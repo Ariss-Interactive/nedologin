@@ -42,6 +42,9 @@ public class MixinPlayerManager {
 
     @Inject(method = "placeNewPlayer", at = @At("RETURN"))
     private void onPlayerConnect(Connection connection, ServerPlayer serverPlayer, CallbackInfo ci) {
+        if (connection.isMemoryConnection())
+            return;
+
         ServerEvents.playerJoin(serverPlayer);
     }
 }

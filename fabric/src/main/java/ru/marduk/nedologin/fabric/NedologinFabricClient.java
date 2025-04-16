@@ -12,7 +12,12 @@ public class NedologinFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         NetworkLoaderClient.registerS2CPackets();
 
-        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> ClientEvents.onJoinServer());
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            if (handler.getConnection().isMemoryConnection())
+                return;
+
+            ClientEvents.onJoinServer();
+        });
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientEvents.onClientRegisterCommand(dispatcher));
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> ClientEvents.onGuiInit(screen));
     }

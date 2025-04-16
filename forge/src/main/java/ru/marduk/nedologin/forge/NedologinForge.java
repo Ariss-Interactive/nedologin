@@ -60,7 +60,9 @@ public class NedologinForge {
     public static class NedologinClientEvents {
         @SubscribeEvent
         public static void joinServer(ClientPlayerNetworkEvent.LoggingIn event) {
-            // if (event.getConnection().isMemoryConnection()) return;
+            if (event.getConnection().isMemoryConnection())
+                return;
+
             ClientEvents.onJoinServer();
         }
 
