@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import ru.marduk.nedologin.NLConfig;
 import ru.marduk.nedologin.NLConstants;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -20,6 +21,9 @@ public final class SetPasswordScreen extends Screen {
     private Button buttonRandom;
     private Button buttonComplete;
 
+    private Component title;
+    private Component describe;
+
     public SetPasswordScreen(Screen parent) {
         super(Component.translatable("nedologin.password.title"));
         this.parentScreen = parent;
@@ -27,6 +31,14 @@ public final class SetPasswordScreen extends Screen {
 
     @Override
     protected void init() {
+        // 获取使用的标题和描述
+        String configTitle = NLConfig.CLIENT.pwdGuiTitle.get();
+        String configDescribe = NLConfig.CLIENT.pwdGuiDesc.get();
+        title = configTitle.isEmpty() ?
+                Component.translatable("nedologin.password.title") : Component.literal(configTitle);
+        describe = configDescribe.isEmpty() ?
+                Component.translatable("nedologin.password.describe") : Component.literal(configDescribe);
+
         this.password = new EditBox(this.font,
                 this.width / 2 - 100, this.height / 2, 170, 20,
                 Component.translatable("nedologin.password"));
@@ -37,7 +49,7 @@ public final class SetPasswordScreen extends Screen {
         this.password.setResponder((p) -> buttonComplete.active = !p.isEmpty());
 
         this.buttonRandom = this.addWidget(Button.builder(Component.literal("R"), btn ->
-                this.password.setValue(UUID.randomUUID().toString()))
+                        this.password.setValue(UUID.randomUUID().toString()))
                 .bounds(this.width / 2 + 80, this.height / 2, 20, 20)
                 .build());
 
@@ -76,8 +88,9 @@ public final class SetPasswordScreen extends Screen {
         renderBackground(gui, mouseX, mouseY, partialTicks);
 
         int middle = width / 2;
-        gui.drawCenteredString(font, Component.translatable("nedologin.password.title"),
-                middle, height / 4, 0xFFFFFF);
+        gui.drawCenteredString(font, title, middle, height / 4, 0xFFFFFF);
+
+        gui.drawCenteredString(font, describe, middle, (height / 4) + 15, 0xAAAAAA);
 
         this.password.render(gui, mouseX, mouseY, partialTicks);
         this.buttonRandom.render(gui, mouseX, mouseY, partialTicks);
