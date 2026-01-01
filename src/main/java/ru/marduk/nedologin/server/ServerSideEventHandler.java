@@ -16,7 +16,6 @@ import ru.marduk.nedologin.server.handler.PlayerLoginHandler;
 import ru.marduk.nedologin.NLConfig;
 import ru.marduk.nedologin.NLConstants;
 import ru.marduk.nedologin.network.MessageRequestLogin;
-import ru.marduk.nedologin.network.NetworkLoader;
 
 import java.lang.reflect.Field;
 
@@ -65,11 +64,17 @@ public class ServerSideEventHandler {
     static {
         Field f;
         try {
-            f = ObfuscationReflectionHelper.findField(CommandSourceStack.class, "f_81288_");
+            f = ObfuscationReflectionHelper.findField(CommandSourceStack.class, "source");
             f.setAccessible(true);
         } catch (Exception ex) {
-            Nedologin.logger.error("Failed to get command source field", ex);
-            f = null;
+            try {
+                Nedologin.logger.error("Failed to get command source field, try other name", ex);
+                f = ObfuscationReflectionHelper.findField(CommandSourceStack.class, "f_81288_");
+                f.setAccessible(true);
+            } catch (Exception ex2) {
+                Nedologin.logger.error("Failed to get command source field", ex2);
+                f = null;
+            }
         }
         COMMAND_SOURCE_FIELD = f;
     }
