@@ -31,7 +31,8 @@ public final class ArgumentTypeEntryName implements ArgumentType<EntryNameInput>
 
     @Override
     public EntryNameInput parse(StringReader reader) throws CommandSyntaxException {
-        String name = reader.readString();
+        // normalize name to lowercase to prevent lookup failures caused by case sensitivity
+        String name = reader.readString().toLowerCase();
 
         if (Environment.get().getDist() == Dist.DEDICATED_SERVER && !NLStorage.instance().storageProvider.registered(name)) {
             throw ENTRY_NOT_EXIST.create(name);
