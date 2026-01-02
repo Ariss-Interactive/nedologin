@@ -13,5 +13,6 @@
   "nedologin.info.password_change_fail": "Password change failed.",
   "nedologin.password.title": "Nedologin Password Setting",
   "nedologin.info.password_change_disabled": "Password changing is disabled on this server.",
-  "nedologin.password": "Password"
+  "nedologin.password": "Password",
+  "nedologin.password.describe": "Set your password below. Make sure to remember it."
 }

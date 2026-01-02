@@ -73,12 +73,36 @@ public final class NLConfig {
         }
     }
 
+    public static class Client {
+        public final ModConfigSpec.ConfigValue<String> pwdGuiTitle;
+        public final ModConfigSpec.ConfigValue<String> pwdGuiDesc;
+
+        Client(ModConfigSpec.Builder builder){
+            pwdGuiTitle = builder
+                    .comment("The title of password settings page")
+                    .comment("The default title will be used if pwdGuiTitle is empty")
+                    .define("pwdGuiTitle", "");
+
+            pwdGuiDesc = builder
+                    .comment("The text under the title to notice player")
+                    .comment("The default title will be used if pwdGuiTitle is empty")
+                    .define("pwdGuiDesc", "");
+        }
+    }
+
     static final ModConfigSpec SERVER_SPEC;
     public static final Server SERVER;
+
+    static final ModConfigSpec CLIENT_SPEC;
+    public static final Client CLIENT;
 
     static {
         final Pair<Server, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Server::new);
         SERVER_SPEC = specPair.getRight();
         SERVER = specPair.getLeft();
+
+        final Pair<Client, ModConfigSpec> clientSpecPair = new ModConfigSpec.Builder().configure(Client::new);
+        CLIENT_SPEC = clientSpecPair.getRight();
+        CLIENT = clientSpecPair.getLeft();
     }
 }
